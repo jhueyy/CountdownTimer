@@ -39,6 +39,7 @@ class TimerViewModel : ViewModel() {
       selectedMinute = min
       selectedSecond = sec
    }
+
    fun startTimer() {
       // Convert hours, minutes, and seconds to milliseconds
       totalMillis = (selectedHour * 60 * 60 + selectedMinute * 60 + selectedSecond) * 1000L
@@ -70,6 +71,5 @@ class TimerViewModel : ViewModel() {
    override fun onCleared() {
       super.onCleared()
       timerJob?.cancel()
-
-      }
+   }
 }

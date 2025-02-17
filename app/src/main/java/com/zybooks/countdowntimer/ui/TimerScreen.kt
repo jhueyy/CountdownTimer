@@ -47,38 +47,11 @@ fun TimerScreen(
             .size(240.dp),
          contentAlignment = Alignment.Center
       ) {
-         @Composable
-         fun AnimatedTimeIndicator(
-            timeDuration: Int = 1000
-         ) {
-            var progress by remember { mutableFloatStateOf(1f) }
-            val progressAnimation by animateFloatAsState(
-               targetValue = progress,
-               animationSpec = tween(
-                  durationMillis = timeDuration,
-                  easing = LinearEasing
-               ),
-               label = "Progress indicator",
-            )
-
-            CircularProgressIndicator(
-               progress = progressAnimation,
-               modifier = Modifier.size(240.dp),
-               color = Color.Magenta,
-               strokeWidth = 20.dp,
-            )
-
-            LaunchedEffect(Unit) {
-               progress = 0f
-            }
-         }
-
          if (timerViewModel.isRunning) {
             AnimatedTimeIndicator(
                timeDuration = timerViewModel.totalMillis.toInt()
             )
          }
-
          Text(
             text = timerText(timerViewModel.remainingMillis),
             fontSize = 40.sp,
@@ -100,8 +73,8 @@ fun TimerScreen(
       } else {
          Button(
             enabled = timerViewModel.selectedHour +
-                  timerViewModel.selectedMinute +
-                  timerViewModel.selectedSecond > 0,
+                    timerViewModel.selectedMinute +
+                    timerViewModel.selectedSecond > 0,
             onClick = timerViewModel::startTimer,
             modifier = modifier.padding(top = 50.dp)
          ) {
@@ -124,6 +97,32 @@ fun timerText(timeInMillis: Long): String {
    return String.format(
       Locale.getDefault(),"%02d:%02d:%02d",
       duration.inWholeHours, duration.inWholeMinutes % 60, duration.inWholeSeconds % 60)
+}
+
+@Composable
+fun AnimatedTimeIndicator(
+   timeDuration: Int = 1000
+) {
+   var progress by remember { mutableFloatStateOf(1f) }
+   val progressAnimation by animateFloatAsState(
+      targetValue = progress,
+      animationSpec = tween(
+         durationMillis = timeDuration,
+         easing = LinearEasing
+      ),
+      label = "Progress indicator",
+   )
+
+   CircularProgressIndicator(
+      progress = progressAnimation,
+      modifier = Modifier.size(240.dp),
+      color = Color.Magenta,
+      strokeWidth = 20.dp,
+   )
+
+   LaunchedEffect(Unit) {
+      progress = 0f
+   }
 }
 
 @Composable
